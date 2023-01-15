@@ -2,13 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Reconstructor():
+class Splicer():
     def __init__(self, r:np.ndarray, g:np.ndarray, b:np.ndarray) -> None:
         self.r = r
         self.g = g
         self.b = b
     
-    def superpose(self, red_shift=(0,0), green_shift=(0,0)) -> np.ndarray:
+    def splice(self, red_shift:tuple=(0,0), green_shift:tuple=(0,0)) -> np.ndarray:
         max_y_shift = max(red_shift[0], green_shift[0], 0)
         max_x_shift = max(red_shift[1], green_shift[1], 0)
 
@@ -36,3 +36,27 @@ class Reconstructor():
         img[b_height:b_height-y_space-1, b_width:b_width-x_space-1, 2] = self.b
 
         return img
+
+    def optimize(self):
+        min_error_rb, min_error_gb = np.inf, np.inf
+        best_r, best_g = None, None
+        for i in range(-15, 16):
+            for j in range(-15, 16):
+                h_slice = slice(abs(i), -abs(i)) if i != 0 else slice(None)
+                v_slice = slice(abs(j), -abs(j)) if j != 0 else slice(None)
+                img = self.splice(red_shift=(i, j), green_shift=(i, j))[h_slice, v_slice]
+
+                size = img.size / 3
+
+                error_rb = np.square(img[:, :, 0] - img[:, :, 2]).sum() / size
+                error_gb = np.square(img[:, :, 1] - img[:, :, 2]).sum() / size
+
+                if error_rb < min_error_rb:
+                    min_error_rb = error_rb
+                    best_r = (i, j)
+
+                if error_gb < min_error_gb:
+                    min_error_gb = error_gb
+                    best_g = (i, j)
+        
+        return best_r, best_g

@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-from reconstructor import Reconstructor
+from splicer import Splicer
 
 
 def imshow(img:np.ndarray, ax:plt.Axes, title) -> None:
@@ -18,34 +19,40 @@ def imshow(img:np.ndarray, ax:plt.Axes, title) -> None:
     ax.set_title(title)
 
 
-def align(r:np.ndarray, g:np.ndarray, b:np.ndarray) -> np.ndarray:
-    pass
-
-
-if __name__=="__main__":
-    # fig = plt.figure(figsize=(16,4))
-    fig = plt.figure(figsize=(8,8))
-
-    img = plt.imread("tp1/images/00911v.jpg")
+def show_img(img_path):
+    img = plt.imread(img_path)
     h = img.shape[0] // 3
     b, g, r = img[:h], img[h:-h], img[-h:]
 
     height = min((x.shape[0] for x in [r, g, b]))
     r, g, b = r[:height], g[:height], b[:height]
 
-    reconstructor = Reconstructor(r, g, b)
+    splicer = Splicer(r, g, b)
 
-    # ax = plt.subplot(141)
+    red_shift, green_shift = splicer.optimize()
+
+    # _ = plt.figure(figsize=(12,12))
+
+    # ax = plt.subplot(221)
     # imshow(r, ax, "Red channel")
     
-    # ax = plt.subplot(142)
+    # ax = plt.subplot(222)
     # imshow(g, ax, "Green channel")
     
-    # ax = plt.subplot(143)
+    # ax = plt.subplot(223)
     # imshow(b, ax, "Blue channel")
 
-    # ax = plt.subplot(144)
+    # ax = plt.subplot(224)
+
+    fig = plt.figure(figsize=(8,8))
     ax = plt.subplot(111)
-    imshow(reconstructor.superpose(red_shift=(-15, 0), green_shift=(-1, 0)), ax, "Reconstructed image")
+
+    imshow(splicer.splice(red_shift=red_shift, green_shift=green_shift), ax, "Reconstructed image")
 
     plt.show()
+
+
+if __name__=="__main__":
+    img_dir = Path("tp1/images")
+    for img in img_dir.glob("*.jpg"):
+        show_img(img)
