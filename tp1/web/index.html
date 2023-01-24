@@ -1,9 +1,11 @@
 <head>
 <title>TP1: Coloration de l'Empire Russe</title>
-<!-- Ceci est un commentaire -->
-<!-- La ligne ci-dessous vous permettra d'écrire votre texte avec des accents français -->
+
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link rel="stylesheet" href="style.css">
+
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
   MathJax.Hub.Config({
     tex2jax: {
@@ -12,43 +14,133 @@
     }
   });
 </script>
+
+<script>
+  const images = {
+    "lowres" : [
+      {"img": "00106v", "x": 0, "y": 0},
+      {"img": "00757v", "x": 0, "y": 0},
+      {"img": "00888v", "x": 0, "y": 0},
+      {"img": "00889v", "x": 0, "y": 0},
+      {"img": "00907v", "x": 0, "y": 0},
+      {"img": "00911v", "x": 0, "y": 0},
+      {"img": "01031v", "x": 0, "y": 0},
+      {"img": "01657v", "x": 0, "y": 0},
+      {"img": "01880v", "x": 0, "y": 0}
+    ],
+    "highres" : [
+      {"img": "00001u", "x": 0, "y": 0},
+      {"img": "00029u", "x": 0, "y": 0},
+      {"img": "00087u", "x": 0, "y": 0},
+      {"img": "00106u", "x": 0, "y": 0},
+      {"img": "00128u", "x": 0, "y": 0},
+      {"img": "00316u", "x": 0, "y": 0},
+      {"img": "00451u", "x": 0, "y": 0},
+      {"img": "00458u", "x": 0, "y": 0},
+      {"img": "00737u", "x": 0, "y": 0},
+      {"img": "00822u", "x": 0, "y": 0},
+      {"img": "00892u", "x": 0, "y": 0},
+      {"img": "01043u", "x": 0, "y": 0},
+      {"img": "01047u", "x": 0, "y": 0},
+      {"img": "01218u", "x": 0, "y": 0},
+      {"img": "01224u", "x": 0, "y": 0},
+      {"img": "01294u", "x": 0, "y": 0},
+      {"img": "01787u", "x": 0, "y": 0},
+      {"img": "01886u", "x": 0, "y": 0}
+    ],
+    "custom" : [
+      {"img": "cats", "x": 0, "y": 0},
+      {"img": "light", "x": 0, "y": 0},
+      {"img": "outside", "x": 0, "y": 0},
+      {"img": "candles", "x": 0, "y": 0},
+      {"img": "tv", "x": 0, "y": 0}
+    ]
+  }
+
+  const changeImages = function() {
+    const mode = document.getElementById("mode").checked ? "reconstructions" : "comparisons"
+    
+    Object.keys(images).forEach(key => {
+      const scroller = document.getElementById(key)
+      scroller.innerHTML = ""
+      
+      images[key].forEach(element => {
+        const img_path = `img/${key}/${mode}/${element.img}.jpg`
+        
+        const img = document.createElement("img")
+        img.src = img_path
+
+        const a = document.createElement("a")
+        a.appendChild(img)
+        a.href = img_path
+
+        const translation = document.createElement("p")
+        translation.innerHTML = `Rouge : $\\Delta x = ${element.x}$, $\\Delta y = ${element.y}$ <br> Vert : $\\Delta x = ${element.x}$, $\\Delta y = ${element.y}$`
+
+        const container = document.createElement("div")
+        container.appendChild(a)
+        container.appendChild(translation)
+        container.className = "scroll-card"
+        scroller.appendChild(container)
+      });
+    })
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+  }
+</script>
 </head>
-<body>
+
+<body onload="changeImages()">
+
   <h1>TP1: Coloration de l'Empire Russe</h1>
 
+  <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="mode" onchange="changeImages()" checked>
+    <label class="custom-control-label" for="mode">Images seulement</label>
+  </div>
+
   <h2>Approche à une seule échelle</h2> 
-  <p>Voici les photos!</p>
-  <div class="scroll-container">
-    <div class="gridscroll" height="50px">
-  <a href="img/lowres/comparisons/00106v.jpg"><img src="img/lowres/reconstructions/00106v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/00757v.jpg"><img src="img/lowres/reconstructions/00757v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/00888v.jpg"><img src="img/lowres/reconstructions/00888v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/00889v.jpg"><img src="img/lowres/reconstructions/00889v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/00907v.jpg"><img src="img/lowres/reconstructions/00907v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/00911v.jpg"><img src="img/lowres/reconstructions/00911v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/01031v.jpg"><img src="img/lowres/reconstructions/01031v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/01657v.jpg"><img src="img/lowres/reconstructions/01657v.jpg" height="98%"></a>
-  <a href="img/lowres/comparisons/01880v.jpg"><img src="img/lowres/reconstructions/01880v.jpg" height="98%"></a>
-    </div>
+  <p>
+    Tout d'abord, une fonction permettant de décaler les canaux rouge et vert par rapport au canal bleu a été implémenter.
+    Par la suite, tous les décalages dans la plage $[-15,15]$ en $x$ et en $y$ sont essayés afin de déterminer le décalage optimal des canaux rouge et vert.
+    Afin d'évaluer un décalage, la moyenne des différences au carré (MSE) entre le canal bleu et le canal évalué est calculée.
+    Le décalage optimal est celui correspondant à l'erreur la plus petite. De plus, $10\%$ de chaque côté de l'image est retiré.
+    Cela permet d'omettre les bord qui ne correspondent pas à l'image ou qui sont endommagés. Les images obtenues sont présentées ci-dessous.
+  </p>
+  <div class="scroll-container" id="lowres">
   </div>
 
   <h2>Approche à échelles multiples</h2> 
-  <p>Voici les photos!</p>
+  <p>
+    Pour les images à hautes résolution, l'approche à une échelle ne permet pas de tester assez de décalages dans un temps raisonnable.
+    Les canaux originaux sont donc initialement réduits de taille par un facteur de 16 et la méthode à une échelle est appliquée sur ces images.
+    Les canaux originaux sont ensuite réduits de taille par un facteur de 8 et la méthode à une échelle est appliquée.
+    Cependant, au lieu de prendre une plage centrée sur zéro, le résultat obtenu avec la réduction de 16 est utilisé (le décalage est multiplié par 2 puisque l'échelle est 2 fois plus grande).
+    Cette procédure est répétée en diminuant le facteur de réduction à chaque étape jusqu'à calculer le décalage sur l'échelle initiale.
+    De plus la plage de recherche est dimininuée de moitié (avec un minimum de $[-2, 2]$) entre chaque étape afin d'accélérer la recherche aux résolutions plus fines.
+    Les images obtenues sont présentées ci-dessous.
+  </p>
+  <div class="scroll-container" id="highres">
+  </div>
+
+  <h2>Je suis Gorskii!</h2> 
+  <p>Les photos ci-dessous ont été prises à partir d'un Samsung Galaxy S21. L'approche à échelle multiple à été utilisée pour l'alignement en utilisant MSE pour la métrique.</p>
+  <div class="scroll-container" id="custom">
+  </div>
+
+  <p>
+    La lumière de la lampe de la deuxième photo ci-dessus peut changer de couleur.
+    Ainsi, les photos prises pour la reconstitution correspondent à différentes couleurs tel que la première image ci-dessous le montre et la couleur résultante est donc blanche.
+    Il est aussi possible de générer de nouvelles couleurs en l'agençant différement et même d'éteindre la lumière. Les images ci-dessous montrent différentes possibilités.
+  </p>
   <div class="scroll-container">
-    <div class="gridscroll" height="50px">
-  <a href="img/highres/comparisons/00001u.jpg"><img src="img/highres/reconstructions/00001u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00029u.jpg"><img src="img/highres/reconstructions/00029u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00087u.jpg"><img src="img/highres/reconstructions/00087u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00106u.jpg"><img src="img/highres/reconstructions/00106u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00128u.jpg"><img src="img/highres/reconstructions/00128u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00458u.jpg"><img src="img/highres/reconstructions/00458u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00737u.jpg"><img src="img/highres/reconstructions/00737u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00822u.jpg"><img src="img/highres/reconstructions/00822u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/00892u.jpg"><img src="img/highres/reconstructions/00892u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/01043u.jpg"><img src="img/highres/reconstructions/01043u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/01047u.jpg"><img src="img/highres/reconstructions/01047u.jpg" height="98%"></a>
-  <a href="img/highres/comparisons/01218u.jpg"><img src="img/highres/reconstructions/01218u.jpg" height="98%"></a>
-    </div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light.jpg"><img src="img/custom/comparisons/light.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_brr.jpg"><img src="img/custom/comparisons/light_brr.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_rrr.jpg"><img src="img/custom/comparisons/light_rrr.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_bgr.jpg"><img src="img/custom/comparisons/light_bgr.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_brb.jpg"><img src="img/custom/comparisons/light_brb.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_rgr.jpg"><img src="img/custom/comparisons/light_rgr.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_rrb.jpg"><img src="img/custom/comparisons/light_rrb.jpg" height="98%"></a></div>
+    <div class="scroll-card"><a href="img/custom/comparisons/light_bgb.jpg"><img src="img/custom/comparisons/light_bgb.jpg" height="98%"></a></div>
   </div>
 
 </body>

@@ -24,7 +24,7 @@ class SingleScaleOptimizer(Optimizer):
             for j in range(-self.search_range, self.search_range+1):
                 h_slice = slice(abs(i), -abs(i)) if i != 0 else slice(None)
                 v_slice = slice(abs(j), -abs(j)) if j != 0 else slice(None)
-                img = splicer.splice(red_shift=(i, j), green_shift=(i, j))[h_slice, v_slice]
+                img = splicer.splice(red_shift=(i, j), green_shift=(i, j), crop=0.1)[h_slice, v_slice]
 
                 error_rb = self.metric.calculate_score(img[:, :, 0], img[:, :, 2])
                 error_gb = self.metric.calculate_score(img[:, :, 1], img[:, :, 2])
@@ -65,12 +65,12 @@ class MultiScaleOptimizer(Optimizer):
                 for j in range(-search_range, search_range+1):
                     h_slice = slice(abs(r0[0]+i), -abs(r0[0]+i)) if r0[0]+i != 0 else slice(None)
                     v_slice = slice(abs(r0[1]+j), -abs(r0[1]+j)) if r0[1]+j != 0 else slice(None)
-                    img = splicer.splice(red_shift=(r0[0]+i, r0[1]+j), green_shift=(r0[0]+i, r0[1]+j), scale=scale)[h_slice, v_slice]
+                    img = splicer.splice(red_shift=(r0[0]+i, r0[1]+j), green_shift=(r0[0]+i, r0[1]+j), scale=scale, crop=0.1)[h_slice, v_slice]
                     error_rb = self.metric.calculate_score(img[:, :, 0], img[:, :, 2])
                     
                     h_slice = slice(abs(g0[0]+i), -abs(g0[0]+i)) if g0[0]+i != 0 else slice(None)
                     v_slice = slice(abs(g0[1]+j), -abs(g0[1]+j)) if g0[1]+j != 0 else slice(None)
-                    img = splicer.splice(red_shift=(g0[0]+i, g0[1]+j), green_shift=(g0[0]+i, g0[1]+j), scale=scale)[h_slice, v_slice]
+                    img = splicer.splice(red_shift=(g0[0]+i, g0[1]+j), green_shift=(g0[0]+i, g0[1]+j), scale=scale, crop=0.1)[h_slice, v_slice]
                     error_gb = self.metric.calculate_score(img[:, :, 1], img[:, :, 2])
                     
                     if error_rb < min_error_rb:

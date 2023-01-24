@@ -8,35 +8,20 @@ from splitter import Splitter
 from optimizers import Optimizer
 
 
-def reconstruct(img_path:Path, optimizer:Optimizer, show=False):
-    # Read image
-    img = img_as_float(imread(img_path))
+def reconstruct(splicer:Splicer, optimizer:Optimizer, name:str, save_dir:Path, show=False):
+    # Calculate optimal translations
+    red_shift, green_shift = optimizer.optimize(splicer)
+    display(splicer, red_shift, green_shift, name, save_dir, show)
 
-    name = img_path.name.split(sep='.')[0] + '.jpg'
-    root_dir = img_path.parent.parent
 
-    reconstruction = root_dir.joinpath("reconstructions", name)
-    comparison = root_dir.joinpath("comparisons", name)
+def display(splicer:Splicer, red_shift:tuple[int,int], green_shift:tuple[int,int], name:str, save_dir:Path, show=False):
+    reconstruction = save_dir.joinpath("reconstructions", name)
+    comparison = save_dir.joinpath("comparisons", name)
 
     reconstruction.parent.mkdir(exist_ok=True)
     comparison.parent.mkdir(exist_ok=True)
 
-    # Split image in RGB channels
-    splitter = Splitter()
-    r, g, b = splitter.split(img, crop=0.1)
-    splicer = Splicer(r, g, b)
-
-    # Calculate optimal translations
-
-    red_shift, green_shift = optimizer.optimize(splicer)
-
     # Display original - RGB channels - Reconstruction
-    splitter = Splitter()
-    r, g, b = splitter.split(img)
-
-    splicer = Splicer(r, g, b)
-    spliced_img = splicer.splice(red_shift=red_shift, green_shift=green_shift)
-
     fig = plt.figure(figsize=(16,8))
     gs = fig.add_gridspec(3, 5)
     ax_original = fig.add_subplot(gs[:, 0])
@@ -45,20 +30,23 @@ def reconstruct(img_path:Path, optimizer:Optimizer, show=False):
     ax_b = fig.add_subplot(gs[0, 1])
     ax_splice = fig.add_subplot(gs[:, 2:])
 
-    ax_original.imshow(img, cmap="gray")
+    ax_original.imshow(splicer.get_original(), cmap="gray")
     ax_original.axis('off')
 
+    r, g, b = splicer.split()
     ax_r.imshow(r, cmap="Reds_r")
     ax_g.imshow(g, cmap="Greens_r")
     ax_b.imshow(b, cmap="Blues_r")
     ax_r.axis('off')
     ax_g.axis('off')
     ax_b.axis('off')
-
+    
+    spliced_img = splicer.splice(red_shift=red_shift, green_shift=green_shift)
     ax_splice.imshow(spliced_img)
     ax_splice.axis('off')
 
     plt.axis('off')
+    plt.tight_layout()
     imsave(reconstruction, img_as_ubyte(spliced_img))
     plt.savefig(comparison)
     if show:

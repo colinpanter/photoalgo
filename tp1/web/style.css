@@ -1,16 +1,37 @@
+body {
+    max-width: 1500px;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
 .scroll-container{
-    overflow: auto;
+    display: flex;
+    flex-direction: row;
+
+    overflow-y:hidden;
     white-space: nowrap;
-    padding: 1% 5px;
     background: gray;
-    height: 300px;
+    height: auto;
     border-radius:15px;
+    background-color: #e9ecef;
 }
   
-.gridscroll{
-    display:inline-block;
+.scroll-card {
+    margin: 10px 10px 0px 10px;
 }
   
-.gridscroll img {
-    margin-right:15px;
+.scroll-card img {
+    height: 300px;
+    border: 5px solid black;
+    border-radius: 5px;
+}
+
+.scroll-card p {
+    text-align: center;
+    margin: 5px;
+}
+
+h2 {
+    margin-top: 20px;
 }
