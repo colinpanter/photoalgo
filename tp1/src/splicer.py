@@ -84,3 +84,16 @@ class ThreeRGBSplicer(Splicer):
     
     def get_original(self) -> np.ndarray:
         return self.original
+
+
+class ThreeBWSplicer(Splicer):
+    def __init__(self, r_path:str, g_path:str, b_path:str) -> None:
+        r = img_as_float(imread(r_path))
+        g = img_as_float(imread(g_path))
+        b = img_as_float(imread(b_path))
+
+        self.original = np.vstack([b, g, r])
+        super().__init__(r, g, b)
+    
+    def get_original(self) -> np.ndarray:
+        return self.original

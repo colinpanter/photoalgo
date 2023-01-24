@@ -11,6 +11,7 @@ from optimizers import Optimizer
 def reconstruct(splicer:Splicer, optimizer:Optimizer, name:str, save_dir:Path, show=False):
     # Calculate optimal translations
     red_shift, green_shift = optimizer.optimize(splicer)
+    print('{' + f'"img": "{name}", "rx": {-red_shift[1]}, "ry": {-red_shift[0]}, "gx": {-green_shift[1]}, "gy": {-green_shift[0]}' + '}')
     display(splicer, red_shift, green_shift, name, save_dir, show)
 
 

@@ -20,4 +20,3 @@ if __name__=="__main__":
 
         splicer = GorskiiSplicer(img)
         reconstruct(splicer, optimizer, img.name, save_dir, show=False)
-    plt.show()

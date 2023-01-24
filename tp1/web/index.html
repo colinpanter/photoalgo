@@ -18,42 +18,64 @@
 <script>
   const images = {
     "lowres" : [
-      {"img": "00106v", "x": 0, "y": 0},
-      {"img": "00757v", "x": 0, "y": 0},
-      {"img": "00888v", "x": 0, "y": 0},
-      {"img": "00889v", "x": 0, "y": 0},
-      {"img": "00907v", "x": 0, "y": 0},
-      {"img": "00911v", "x": 0, "y": 0},
-      {"img": "01031v", "x": 0, "y": 0},
-      {"img": "01657v", "x": 0, "y": 0},
-      {"img": "01880v", "x": 0, "y": 0}
+      {"img": "00106v", "rx": -1, "ry": 9, "gx": 0, "gy": 4},
+      {"img": "00757v", "rx": 5, "ry": 5, "gx": 3, "gy": 2},
+      {"img": "00888v", "rx": 0, "ry": 12, "gx": 0, "gy": 6},
+      {"img": "00889v", "rx": 3, "ry": 4, "gx": 2, "gy": 2},
+      {"img": "00907v", "rx": 0, "ry": 6, "gx": 0, "gy": 3},
+      {"img": "00911v", "rx": -1, "ry": 13, "gx": 0, "gy": 1},
+      {"img": "01031v", "rx": 2, "ry": 4, "gx": 1, "gy": 1},
+      {"img": "01657v", "rx": 1, "ry": 12, "gx": 0, "gy": 6},
+      {"img": "01880v", "rx": 4, "ry": 14, "gx": 2, "gy": 6}
     ],
     "highres" : [
-      {"img": "00001u", "x": 0, "y": 0},
-      {"img": "00029u", "x": 0, "y": 0},
-      {"img": "00087u", "x": 0, "y": 0},
-      {"img": "00106u", "x": 0, "y": 0},
-      {"img": "00128u", "x": 0, "y": 0},
-      {"img": "00316u", "x": 0, "y": 0},
-      {"img": "00451u", "x": 0, "y": 0},
-      {"img": "00458u", "x": 0, "y": 0},
-      {"img": "00737u", "x": 0, "y": 0},
-      {"img": "00822u", "x": 0, "y": 0},
-      {"img": "00892u", "x": 0, "y": 0},
-      {"img": "01043u", "x": 0, "y": 0},
-      {"img": "01047u", "x": 0, "y": 0},
-      {"img": "01218u", "x": 0, "y": 0},
-      {"img": "01224u", "x": 0, "y": 0},
-      {"img": "01294u", "x": 0, "y": 0},
-      {"img": "01787u", "x": 0, "y": 0},
-      {"img": "01886u", "x": 0, "y": 0}
+      {"img": "00001u", "rx": -7, "ry": 97, "gx": 3, "gy": 38},
+      {"img": "00029u", "rx": 34, "ry": 91, "gx": 16, "gy": 39},
+      {"img": "00087u", "rx": 55, "ry": 108, "gx": 38, "gy": 48},
+      {"img": "00106u", "rx": -8, "ry": 93, "gx": 9, "gy": 39},
+      {"img": "00128u", "rx": 38, "ry": 52, "gx": 25, "gy": 35},
+      {"img": "00316u", "rx": 20, "ry": 110, "gx": 9, "gy": 30},
+      {"img": "00451u", "rx": 0, "ry": 426, "gx": 0, "gy": 421},
+      {"img": "00458u", "rx": 32, "ry": 87, "gx": 6, "gy": 43},
+      {"img": "00737u", "rx": 14, "ry": 49, "gx": 7, "gy": 15},
+      {"img": "00822u", "rx": 33, "ry": 125, "gx": 25, "gy": 57},
+      {"img": "00892u", "rx": 4, "ry": 43, "gx": 2, "gy": 16},
+      {"img": "01043u", "rx": 17, "ry": 11, "gx": 10, "gy": -16},
+      {"img": "01047u", "rx": 33, "ry": 71, "gx": 20, "gy": 24},
+      {"img": "01218u", "rx": 57, "ry": 119, "gx": 36, "gy": 59},
+      {"img": "01224u", "rx": 28, "ry": 139, "gx": 22, "gy": 67},
+      {"img": "01294u", "rx": 41, "ry": 137, "gx": 30, "gy": 64},
+      {"img": "01787u", "rx": 36, "ry": 146, "gx": 25, "gy": 68},
+      {"img": "01886u", "rx": 58, "ry": 101, "gx": 24, "gy": 49}
+    ],
+    "edges" : [
+      {"img": "00001u", "rx": -8, "ry": 97, "gx": 2, "gy": 38},
+      {"img": "00029u", "rx": 32, "ry": 91, "gx": 14, "gy": 39},
+      {"img": "00087u", "rx": 56, "ry": 107, "gx": 38, "gy": 49},
+      {"img": "00106u", "rx": 0, "ry": 91, "gx": 9, "gy": 38},
+      {"img": "00128u", "rx": 37, "ry": 49, "gx": 26, "gy": 37},
+      {"img": "00316u", "rx": 0, "ry": 0, "gx": 10, "gy": 30},
+      {"img": "00451u", "rx": -36, "ry": 103, "gx": -19, "gy": 45},
+      {"img": "00458u", "rx": 30, "ry": 85, "gx": 0, "gy": 41},
+      {"img": "00737u", "rx": 15, "ry": 50, "gx": 7, "gy": 16},
+      {"img": "00822u", "rx": 33, "ry": 125, "gx": 25, "gy": 57},
+      {"img": "00892u", "rx": 0, "ry": 43, "gx": 0, "gy": 16},
+      {"img": "01043u", "rx": 15, "ry": 13, "gx": 9, "gy": -14},
+      {"img": "01047u", "rx": 33, "ry": 71, "gx": 20, "gy": 25},
+      {"img": "01218u", "rx": 0, "ry": 128, "gx": 0, "gy": 61},
+      {"img": "01224u", "rx": 28, "ry": 138, "gx": 20, "gy": 64},
+      {"img": "01294u", "rx": 40, "ry": 137, "gx": 30, "gy": 63},
+      {"img": "01787u", "rx": 35, "ry": 146, "gx": 24, "gy": 67},
+      {"img": "01886u", "rx": 40, "ry": 107, "gx": 24, "gy": 49}
     ],
     "custom" : [
-      {"img": "cats", "x": 0, "y": 0},
-      {"img": "light", "x": 0, "y": 0},
-      {"img": "outside", "x": 0, "y": 0},
-      {"img": "candles", "x": 0, "y": 0},
-      {"img": "tv", "x": 0, "y": 0}
+      {"img": "cats", "rx": 5, "ry": -8, "gx": -2, "gy": -20},
+      {"img": "light", "rx": 0, "ry": 11, "gx": 25, "gy": 0},
+      {"img": "outside", "rx": -17, "ry": -73, "gx": -31, "gy": -45},
+      {"img": "candles", "rx": -17, "ry": -56, "gx": -39, "gy": -39},
+      {"img": "tv", "rx": 0, "ry": 6, "gx": -22, "gy": -31},
+      {"img": "plush", "rx": 0, "ry": 0, "gx": 0, "gy": 1},
+      {"img": "blocks", "rx": 0, "ry": 0, "gx": 1, "gy": 1}
     ]
   }
 
@@ -75,7 +97,7 @@
         a.href = img_path
 
         const translation = document.createElement("p")
-        translation.innerHTML = `Rouge : $\\Delta x = ${element.x}$, $\\Delta y = ${element.y}$ <br> Vert : $\\Delta x = ${element.x}$, $\\Delta y = ${element.y}$`
+        translation.innerHTML = `Rouge : $\\Delta x = ${element.rx}$, $\\Delta y = ${element.ry}$ <br> Vert : $\\Delta x = ${element.gx}$, $\\Delta y = ${element.gy}$`
 
         const container = document.createElement("div")
         container.appendChild(a)
@@ -120,6 +142,14 @@
     Les images obtenues sont présentées ci-dessous.
   </p>
   <div class="scroll-container" id="highres">
+  </div>
+
+  <h2>Approche par comparaison des arêtes</h2> 
+  <p>
+    Cette approche utilise la même méthode que l'approche à échelle multiple. Cependant, un filtre de Sobel est appliqué sur les canaux avant de calculer le MSE.
+    Ainsi, ce sont les arêtes qui sont comparées plutôt que les couleurs directement. Les images obtenues sont présentées ci-dessous.
+  </p>
+  <div class="scroll-container" id="edges">
   </div>
 
   <h2>Je suis Gorskii!</h2> 
