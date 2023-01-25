@@ -122,14 +122,18 @@
 
   <h2>Approche à une seule échelle</h2> 
   <p>
-    Tout d'abord, une fonction permettant de décaler les canaux rouge et vert par rapport au canal bleu a été implémenter.
+    Tout d'abord, une fonction permettant de décaler les canaux rouge et vert par rapport au canal bleu a été implémentée.
     Par la suite, tous les décalages dans la plage $[-15,15]$ en $x$ et en $y$ sont essayés afin de déterminer le décalage optimal des canaux rouge et vert.
     Afin d'évaluer un décalage, la moyenne des différences au carré (MSE) entre le canal bleu et le canal évalué est calculée.
     Le décalage optimal est celui correspondant à l'erreur la plus petite. De plus, $10\%$ de chaque côté de l'image est retiré.
     Cela permet d'omettre les bord qui ne correspondent pas à l'image ou qui sont endommagés. Les images obtenues sont présentées ci-dessous.
   </p>
-  <div class="scroll-container" id="lowres">
-  </div>
+  <div class="scroll-container" id="lowres"></div>
+  <p>
+    Les résultats obtenus sont tous de bonne qualité.
+    La basse résolution rend l'alignement plus simple puisque qu'un déplacement d'un pixel n'est pas négligeable.
+    Il y a donc moins d'erreurs possible.
+  </p>
 
   <h2>Approche à échelles multiples</h2> 
   <p>
@@ -143,6 +147,12 @@
   </p>
   <div class="scroll-container" id="highres">
   </div>
+  <p>
+    La majorité des images sont de bonne qualité. Cependant, l'émir de Boukhara et l'image de la ville portuaire n'ont pas réussi à trouver un bon alignement.
+    Selon moi, la cause de ces échecs vient de la différence entre les canaux. Le canal bleu est trop différent du vert et du rouge et la position optimale ne correspond pas à l'alignement cherché.
+    On note aussi que $10%$ d'une image est retiré de chaques côtés, mais si plus est retiré, plus d'images sont mal alignées tel que l'image des rails.
+    Le reste des images sont reconstituées avec assez de précision pour que les erreurs ne soient pas évidentes à l'oeil nu.
+  </p>
 
   <h2>Approche par comparaison des arêtes</h2> 
   <p>
@@ -151,12 +161,32 @@
   </p>
   <div class="scroll-container" id="edges">
   </div>
+  <p>
+    Tout comme l'approche à échelles multiples, cette approche obtient généralementdes bons reésultats.
+    La majorité n'ont qu'un ou deux pixel de différence avec la méthode précédente, ce qui n'est pas perceptible à l'oeil nu.
+    Certains ont de légères différences tel que le mosieur au chapeau noir qui est un peu moins bon ou la locomotive qui est un peu meilleure.
+    Finalement, d'autres ont des différences importantes comme l'émir de Boukhara et la ville portuaire qui sont bien alignés contrairement à la méthode précédente ou
+    les rails et la cabine dans l'étang qui sont mal alignés cette fois.
+    Cette méthode ne dépend pas de la valeur des couleurs mais plutôt de leur relation à leur voisin.
+    Elle peut donc reconstituer l'émir de Boukhara puisque les arêtes sont similaires dans les canaux alors que pour la cabine, les arêtes sont plus nombreuses et moins évidentes,
+    ce qui rend l'approche moins performante.
+  </p>
 
   <h2>Je suis Gorskii!</h2> 
   <p>Les photos ci-dessous ont été prises à partir d'un Samsung Galaxy S21. L'approche à échelle multiple à été utilisée pour l'alignement en utilisant MSE pour la métrique.</p>
   <div class="scroll-container" id="custom">
   </div>
+  <p>
+    Les images obtenues sont généralement de bonne qualité. Cependant, certains artefacts apparaissent sur quelques photos.
+    Notamment, lorsque des éléments bougent, la reconstruction ne les affichent pas correctement tel que le chat qui a tourné la tête ou la chandelle qui vacille.
+    Il n'est donc pas possible d'aligner ces éléments sans désaligner le reste de l'image. <br>
+    L'image de la télévision présente un phénomène similaire où l'image affichée sur la télévision est différente pour chaque canaux.
+    L'image affichée résultante est donc un mélange des trois images. Cependant, la différence a aussi causé un léger désalignement sur l'image reconstituée. <br>
+    Finalement, un désalignement peut aussi parfois être constaté sur les bords des images reconstituées tel que sur l'image du lit et l'image de l'extérieur.
+    Cela provient probablement des mouvements lors de la prise de photo n'affectant pas les objets également selon leur distance.
+  </p>
 
+  <h3>Changement d'illumination</h3>
   <p>
     La lumière de la lampe de la deuxième photo ci-dessus peut changer de couleur.
     Ainsi, les photos prises pour la reconstitution correspondent à différentes couleurs tel que la première image ci-dessous le montre et la couleur résultante est donc blanche.
@@ -172,5 +202,27 @@
     <div class="scroll-card"><a href="img/custom/comparisons/light_rrb.jpg"><img src="img/custom/comparisons/light_rrb.jpg" height="98%"></a></div>
     <div class="scroll-card"><a href="img/custom/comparisons/light_bgb.jpg"><img src="img/custom/comparisons/light_bgb.jpg" height="98%"></a></div>
   </div>
+
+  <h3>Photos noires et blanches filtrées</h3>
+  <p>
+    Les photos de la peluche et des blocs ont été prises par une caméra noire et blanche avec un filtre placé devant l'objectif de façon similaire à Gorskii.
+    Les filtres ci-dessous ont été utilisés :</p>
+  <div class="scroll-card"><a href="img/other/filtres.jpg"><img src="img/other/filtres.jpg"></a></div>
+  <p>
+    <br>
+    Les filtres ayant une absorption différente, les blancs ont été équilibrés en utilisant le museau de la peluche comme point neutre afin de compenser.
+    Une comparaison avec les objets pris avec une caméra RGB est présentée ci-dessous.
+    On constate que les couleurs des photos reconstituées sont plus désaturée que celle prise en couleur.
+    Cela peut être expliqué par les filtres utilisés ne filtre pas aussi bien que ceux utilisés par la caméra couleur.
+    Cependant, les images reconstituées sont tout de même fiables.
+  </p>
+    <div class="scroll-card">
+      <a href="img/other/plush.jpg"><img src="img/other/plush.jpg"></a>
+      <a href="img/custom/comparisons/plush.jpg"><img src="img/custom/comparisons/plush.jpg"></a>
+    </div>
+    <div class="scroll-card">
+      <a href="img/other/blocks.jpg"><img src="img/other/blocks.jpg"></a>
+      <a href="img/custom/comparisons/blocks.jpg"><img src="img/custom/comparisons/blocks.jpg"></a>
+    </div>
 
 </body>
