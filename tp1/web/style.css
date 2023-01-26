@@ -5,6 +5,11 @@ body {
     margin-top: 50px;
 }
 
+nav {
+    max-width: 1500px;
+    margin: auto;
+}
+
 .scroll-container{
     display: flex;
     flex-direction: row;

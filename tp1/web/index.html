@@ -113,12 +113,15 @@
 
 <body onload="changeImages()">
 
+  <nav class="navbar fixed-top navbar-light bg-light">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="mode" onchange="changeImages()" checked>
+        <label class="custom-control-label" for="mode">Images seulement</label>
+    </div>
+  </nav>
+
   <h1>TP1: Coloration de l'Empire Russe</h1>
 
-  <div class="custom-control custom-switch">
-    <input type="checkbox" class="custom-control-input" id="mode" onchange="changeImages()" checked>
-    <label class="custom-control-label" for="mode">Images seulement</label>
-  </div>
 
   <h2>Approche à une seule échelle</h2> 
   <p>
