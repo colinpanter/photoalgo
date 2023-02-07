@@ -15,7 +15,19 @@ class GaussianFilter(Filter):
         super().__init__()
         self.sigma = sigma
     
+    @staticmethod
+    def filter(image: array, sigma: float) -> array:
+        filter = GaussianFilter(sigma)
+        return filter(image)
+    
     def __call__(self, image: array) -> array:
+        if len(image.shape) == 2:
+            return gaussian_filter(image, self.sigma)
+        else:
+            channels = []
+            for i in range(image.shape[2]):
+                channels.append(gaussian_filter(image[:, :, i], self.sigma))
+            return np.stack(channels, axis=2)
         return gaussian_filter(image, self.sigma)
 
 
