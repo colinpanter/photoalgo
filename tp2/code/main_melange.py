@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import img_as_float, img_as_ubyte
-from skimage.io import imsave
+from skimage.io import imsave, imread
 
 from stack import Stacker
 
@@ -11,6 +11,9 @@ IMAGES = {
     "tree" : {'l': 'tree_summer.png', 'r': 'tree_winter.png'},
     "space" : {'l': 'spaceship.jpg', 'r': 'moon.jpg', 'mask': 'mask_spaceship.jpg'},
     "marsthedral" : {'l': 'cathedral.jpg', 'r': 'mars.jpg', 'mask': 'cathedral_mask.jpg'},
+    "me" : {'l': 'assis.jpg', 'r': 'physicists.jpg', 'mask': 'assis_mask.jpg'},
+    "holding_sun" : {'l': 'sun.jpg', 'r': 'holding.jpg', 'mask': 'sun_mask.jpg'},
+    "irl_dbz" : {'l': 'spirit_bomb.jpg', 'r': 'posing.jpg', 'mask': 'spirit_bomb_mask.jpg'},
     "electroreseau" : {'l': 'electro.jpg', 'r': 'reseau.jpg'}
 }
 
@@ -20,21 +23,21 @@ def normalize(img:np.ndarray) -> np.ndarray:
 
 
 if __name__ == "__main__":
-    name = "marsthedral"
-    img_l = img_as_float(plt.imread(f"tp2/images/{IMAGES[name]['l']}"))#[:,:,:3]
-    img_r = img_as_float(plt.imread(f"tp2/images/{IMAGES[name]['r']}"))#[:,:,:3]
+    name = "irl_dbz"
+    img_l = img_as_float(imread(f"tp2/images/{IMAGES[name]['l']}"))
+    img_r = img_as_float(imread(f"tp2/images/{IMAGES[name]['r']}"))
 
     if 'mask' in IMAGES[name]:
-        mask = img_as_float(plt.imread(f"tp2/images/{IMAGES[name]['mask']}"))[:,:,:3]
+        mask = img_as_float(imread(f"tp2/images/{IMAGES[name]['mask']}"))
     else:
         mask = np.zeros(img_l.shape)
         mask[:, :img_l.shape[1]//2] = 1.
 
     n_filters = 5
-    start = 1/8
+    start = 1/4
     img_l_stack = Stacker(img_l, n_filters=n_filters, start=start).laplacian
     img_r_stack = Stacker(img_r, n_filters=n_filters, start=start).laplacian
-    mask_stack = Stacker(mask, n_filters=n_filters, start=start/4).gaussian
+    mask_stack = Stacker(mask, n_filters=n_filters, start=start/2).gaussian
     
     masked_l = img_l_stack * mask_stack
     masked_r = img_r_stack * (1 - mask_stack)
