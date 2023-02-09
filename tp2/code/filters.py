@@ -1,7 +1,5 @@
 import numpy as np
 from numpy import ndarray as array
-from numpy.fft import fft2, ifft2, fftshift, ifftshift
-from scipy.signal import convolve2d
 from scipy.ndimage import gaussian_filter
 
 

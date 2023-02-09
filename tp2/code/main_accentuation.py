@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread, imsave
-from skimage import img_as_float, img_as_ubyte
+from skimage.io import imread
+from skimage import img_as_float
 
 from filters import AntiGaussianFilter
 
