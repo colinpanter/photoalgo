@@ -1,0 +1,84 @@
+<head>
+<title>TP2: On s'amuse en fréquences</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+
+
+</head>
+
+<body>
+
+  <h1>TP2: On s'amuse en fréquences</h1>
+
+
+  <h2>Partie 0: Réchauffement</h2> 
+  <p>
+    Pour effectuer l'accentuation, un filtre gaussien est convolué avec l'image. L'image filtrée est soustraite à l'image initiale afin de garder les détails.
+    Les détails sont ensuite multipliés par un paramètre $\alpha$, puis additionés à l'image initiale afin d'accentuer les détails.
+    Les images ci-dessous sont obtenues en variant le paramètre $\alpha$.
+  </p>
+  <img src="images/Einstein_sharpened.png" height="400px">
+  <img src="images/cat_sharpened.png" height="400px">
+
+  <h2>Partie 1: Images hybrides</h2> 
+  <p>
+    Afin d'obtenir une image hybride, une première image est convoluée avec un filtre gaussien afin d'obtenir ses basses fréquences.
+    Une seconde image est ensuite convoluée par un filtre gaussien qu'on soustrait à elle même afin d'obtenir ses hautes fréquences.
+    Les deux images obtenues sont ensuite additionnées pour obtenir l'image hybride. Des exemples sont affichés ci-dessous.
+  </p>
+  <img src="images/Einroe.jpg" height="400px">
+  <img src="images/catdog.jpg" height="400px">
+  <img src="images/colympic.jpg" height="400px">
+  <p><br>
+    La figure ci-dessous montre les images originales, les images filtrées et l'image hybride obtenue ainsi que l'amplitude logarithmique de leurs fréquences.
+  </p>
+  <img src="images/frequences.png" height="1000px">
+
+  <h2>Partie 2: Piles gaussienne et laplacienne</h2> 
+  <p>
+    Yeet
+  </p>
+
+  <h2>Partie 3: Mélange multirésolution</h2> 
+  <p>
+    Afin de créer un mélange multirésolution, deux images ainsi qu'un masque sont choisis.
+    Des piles laplaciennes sont générées pour les images et une pile gaussienne pour le masque.
+    Pour chaque résolutions, l'équation de reconstruction est appliquée :
+    $$
+      I_i = m_i A_i + (1 - m_i) B_i
+    $$
+    où $m_i$ est le $i$-ème masque de la pile gaussienne, $A_i$ et $B_i$ sont les $i$-èmes images des piles laplaciennes de la première et la deuxième image respectivement.
+    Les $I_i$ sont ensuite additionnés pour obtenir le mélange multirésolution.
+    Par exemple, la pommange ci-dessous a été obtenue avec un masque faisant divisant l'image horizontalement en deux.
+  </p>
+  <img src="images/pommange.jpg" height="400px">
+
+  <p><br>
+    Des masques irréguliers peuvent aussi être utilisés tel que pour les images ci-dessous :
+  </p>
+  <img src="images/space.jpg" height="400px">
+  <img src="images/marsthedral.jpg" height="400px">
+
+  <p><br>
+    Cette technique est aussi appliquée sur mes propres images :
+  </p>
+  <img src="images/electroreseau.jpg" height="400px">
+
+  <p><br>
+    Finalement, la figure ci-dessous montre les laplaciens masqués (gauche et centre) ainsi que les sommes des deux (droite) pour la cathédrale sur mars :
+  </p>
+  <img src="images/marsthedral_decomposed.png" width="100%">
+
+</body>
