@@ -21,45 +21,18 @@ def morph(img1, img2, img1_pts, img2_pts, tri, warp_frac, dissolve_frac):
         inverse_morphed_matrix = np.linalg.inv(np.vstack([tri_morphed_pts.T, [1, 1, 1]]))
         tf1.append((np.vstack([tri_img1_pts.T, [1, 1, 1]]) @ inverse_morphed_matrix)[:2, :])
         tf2.append((np.vstack([tri_img2_pts.T, [1, 1, 1]]) @ inverse_morphed_matrix)[:2, :])
-        # print(tri_morphed_pts, i)
-        if i == -1:
-            print(tri_morphed_pts)
-            print(tri_img1_pts)
-            print(tri_img2_pts)
-            print(tf1[-1])
-            print(tf2[-1])
-
-        # print(np.hstack([tri_morphed_pts, np.array([[1, 1, 1]]).T]))
 
         shape = Path(tri_morphed_pts)
-        inside = shape.contains_points(pos).reshape((h, w))
+        inside = shape.contains_points(pos, radius=0.1).reshape((h, w))
         correspondance[inside] = i
     tf1, tf2 = np.array(tf1)[correspondance.flatten()], np.array(tf2)[correspondance.flatten()]
     
     morphed_pos1 = np.zeros(pos.shape) # (pos * tf1[:, :, 0] + pos[:, ::-1] * tf1[:, :, 1] + tf1[:, :, 2])
-    morphed_pos1[:, 0] += pos[:, 0] * tf1[:, 0, 0] + pos[:, 1] * tf1[:, 0, 1] + tf1[:, 0, 2]
-    morphed_pos1[:, 1] += pos[:, 0] * tf1[:, 1, 0] + pos[:, 1] * tf1[:, 1, 1] + tf1[:, 0, 2]
+    morphed_pos1[:, 1] += pos[:, 0] * tf1[:, 0, 0] + pos[:, 1] * tf1[:, 0, 1] + tf1[:, 0, 2]
+    morphed_pos1[:, 0] += pos[:, 0] * tf1[:, 1, 0] + pos[:, 1] * tf1[:, 1, 1] + tf1[:, 1, 2]
     morphed_pos2 = np.zeros(pos.shape) # (pos * tf2[:, :, 0] + pos[:, ::-1] * tf2[:, :, 1] + tf2[:, :, 2])
-    morphed_pos2[:, 0] += pos[:, 0] * tf2[:, 0, 0] + pos[:, 1] * tf2[:, 0, 1] + tf2[:, 0, 2]
-    morphed_pos2[:, 1] += pos[:, 0] * tf2[:, 1, 0] + pos[:, 1] * tf2[:, 1, 1] + tf2[:, 0, 2]
-
-    # print(tf1[0])
-    # print(morphed_pos1[0])
-    # print()
-    # print(tf2[0])
-    # print(morphed_pos2[0])
-    # print(tf2[0, 0, 0])
-    # print(tf2[0, 0, 1])
-    # print(tf2[0, 0, 2])
-    # print(tf2[0, 1, 0])
-    # print(tf2[0, 1, 1])
-    # print(tf2[0, 1, 2])
-    # print(pos[0] * tf2[0, :, 0] + pos[0, ::-1] * tf2[0, :, 1] + tf2[0, :, 2])
-    # plt.imshow(correspondance)
-    # plt.show()
-
-    # print(f"{morphed_pos1[0]=}")
-    # print(pos.max(axis=0))
+    morphed_pos2[:, 1] += pos[:, 0] * tf2[:, 0, 0] + pos[:, 1] * tf2[:, 0, 1] + tf2[:, 0, 2]
+    morphed_pos2[:, 0] += pos[:, 0] * tf2[:, 1, 0] + pos[:, 1] * tf2[:, 1, 1] + tf2[:, 1, 2]
     
     morphed_img1 = np.dstack([(RectBivariateSpline(np.arange(h), np.arange(w), img1[:, :, i]).ev(morphed_pos1[:, 0], morphed_pos1[:, 1])).reshape((h, w)) for i in range(3)])
     morphed_img2 = np.dstack([(RectBivariateSpline(np.arange(h), np.arange(w), img2[:, :, i]).ev(morphed_pos2[:, 0], morphed_pos2[:, 1])).reshape((h, w)) for i in range(3)])
