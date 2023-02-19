@@ -1,6 +1,8 @@
 # Custom ignores
 tp1/images/
 tp2/images/
+tp3/images/
+tp3/donnees/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
