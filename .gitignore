@@ -3,6 +3,8 @@ tp1/images/
 tp2/images/
 tp3/images/
 tp3/donnees/
+tp3/resultats/
+tp3/video/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

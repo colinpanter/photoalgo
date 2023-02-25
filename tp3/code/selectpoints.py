@@ -11,9 +11,13 @@ wxcursor_demo.py
 """
 from __future__ import print_function
 from pylab import *
-# import scipy.misc
 from skimage import io
 import sys
+
+# NAME = "courge"
+# NAME = "pineapple"
+NAME = "Marilyn_Monroe"
+# NAME = "Albert_Einstein"
 
 class Cursor:
     def __init__(self, ax, s):
@@ -22,7 +26,7 @@ class Cursor:
         self.ly = ax.axvline(color='k')  # the vert line
 
         # text location in axes coords
-        self.f = "tp3/images/Panter_Colin.txt"
+        self.f = f"tp3/donnees/{NAME}.txt"
         self.count = 1
         self.s = s
 
@@ -40,7 +44,7 @@ class Cursor:
         draw()
 
 fig, ax = subplots()
-p = io.imread("tp3/images/Panter_Colin.jpg")
+p = io.imread(f"tp3/donnees/{NAME}.jpg")
 ax.imshow(p)
 cursor = Cursor(ax, p.shape)
 connect('button_press_event', cursor.mouseclick)
