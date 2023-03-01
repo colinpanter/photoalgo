@@ -8,6 +8,7 @@ from skimage import img_as_float, img_as_ubyte
 from utils import *
 from morph import morph
 from scipy.spatial import Delaunay
+from random import randrange
 
 
 N_COMPONENTS = 10
@@ -116,9 +117,10 @@ def pca_colin(pca:PCA, delta:list):
 if __name__ == "__main__":
     pca = create_pca()
 
-    delta = [0] * N_COMPONENTS
-    delta[5] = -3
+    delta = [randrange(-3, 3) for _ in range(N_COMPONENTS)]
+    delta[0], delta[1] = 0, 0
     pca_colin(pca, delta)
+    print(f"Delta {delta}")
     
     # for i in range(N_COMPONENTS):
     #     Path(f"tp3/images/component_{i}").mkdir(exist_ok=True)
