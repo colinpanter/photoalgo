@@ -136,6 +136,20 @@
     <img src="./resultats/colin_f_2.jpg">
   </div>
 
+  Finalement, afin de garder les caractéristiques de mon visage, la différence entre les points féminins moyens et points masculins moyens est ajoutée aux points de mon visage tel que montré ci-dessous:
+  $$
+    \mathbf{p}_\text{f colin} = \mathbf{p}_\text{colin} + \mathbf{p}_\text{f avg} - \mathbf{p}_\text{m avg}
+  $$
+  Ainsi, le visage garde les caractéristiques qui ne sont pas liées au genre.
+  L'image du visage féminin moyen et mon visage sont déformés vers ces points afin d'obtenir l'image de gauche et l'image du centre.
+  Une moyenne des deux images est ensuite effectuée afin d'obtenir l'image de droite.
+  Le fondu obtenu est aussi convaincant que les résultats précédents, mais la forme est plus propre à mon visage initial.
+  <div class="compare">
+    <img src="./resultats/avg/avg_f_as_colin.jpg">
+    <img src="./resultats/colin_f_v2.jpg">
+    <img src="./resultats/colin_f_2_v2.jpg">
+  </div>
+
   <h3>Analyse en composantes principales</h3>
   <p>
     Les points déterminés sur les photos de la base de donnée d'Utrecht peuvent être utilisés afin de les décomposer en composantes principales.

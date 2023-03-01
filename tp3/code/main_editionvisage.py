@@ -31,16 +31,31 @@ if __name__ == "__main__":
         colin_pts += [[0,0], [0,h], [w,h], [w,0]]
         colin_pts = np.array(colin_pts)
     
+    m_img, f_img = img_as_float(m_img), img_as_float(f_img)
+
+    # Visage masculin
     tri = Delaunay((colin_pts + m_pts) / 2).simplices
-    colin_m = morph(colin_img, img_as_float(m_img), colin_pts, m_pts, tri, 0., 1.)
+    colin_m = morph(colin_img, m_img, colin_pts, m_pts, tri, 0., 1.)
     imsave("tp3/resultats/colin_m.jpg", img_as_ubyte(np.clip(colin_m, 0, 1)))
 
-    colin_m_2 = morph(colin_img, img_as_float(m_img), colin_pts, m_pts, tri, 0.5, 0.5)
+    colin_m_2 = morph(colin_img, m_img, colin_pts, m_pts, tri, 0.5, 0.5)
     imsave("tp3/resultats/colin_m_2.jpg", img_as_ubyte(np.clip(colin_m_2, 0, 1)))
     
+    # Visage féminin
     tri = Delaunay((colin_pts + f_pts) / 2).simplices
-    colin_f = morph(colin_img, img_as_float(f_img), colin_pts, f_pts, tri, 0., 1.)
+    colin_f = morph(colin_img, f_img, colin_pts, f_pts, tri, 0., 1.)
     imsave("tp3/resultats/colin_f.jpg", img_as_ubyte(np.clip(colin_f, 0, 1)))
     
-    colin_f_2 = morph(colin_img, img_as_float(f_img), colin_pts, f_pts, tri, 0.5, 0.5)
+    colin_f_2 = morph(colin_img, f_img, colin_pts, f_pts, tri, 0.5, 0.5)
     imsave("tp3/resultats/colin_f_2.jpg", img_as_ubyte(np.clip(colin_f_2, 0, 1)))
+    
+    # Visage féminin v2
+    colin_f_pts = colin_pts + f_pts - m_pts
+    tri = Delaunay(colin_f_pts).simplices
+    colin_f_v2 = morph(colin_img, colin_img, colin_pts, colin_f_pts, tri, 0., 1.)
+    imsave("tp3/resultats/colin_f_v2.jpg", img_as_ubyte(np.clip(colin_f_v2, 0, 1)))
+    
+    avg_f_as_colin = morph(f_img, f_img, f_pts, colin_f_pts, tri, 0., 1.)
+    imsave("tp3/resultats/avg/avg_f_as_colin.jpg", img_as_ubyte(np.clip(avg_f_as_colin, 0, 1)))
+    
+    imsave("tp3/resultats/colin_f_2_v2.jpg", img_as_ubyte(np.clip((colin_f_v2 + avg_f_as_colin) / 2, 0, 1)))
