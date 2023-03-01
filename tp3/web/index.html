@@ -1,0 +1,184 @@
+<head>
+<title>TP3 : Métamorphose de visages</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+</head>
+
+<body>
+  <h1>TP3 : Métamorphose de visages</h1>
+
+  <h2>Partie A</h2>
+  <p>
+  L'algorithme utilise deux images ainsi que des points qui ciblent des endroits clé des images.
+  Des triangles sont ensuite déterminés par une triangulation de Delaunay.<br>
+  Afin de mélanger les deux visages, les points cibles sont déterminés par une moyenne pondérée par le paramètre <i>warp_frac</i>.
+  Pour chaque triangle, la transformation affine permettant de passer d'une image initiale au mélange est calculée.
+  Pour se faire, on définit les éléments suivant :
+  $$
+    \mathbf{T} = \begin{bmatrix} a & b & c\\ d & e & f\\ 0 & 0 & 1 \end{bmatrix}, \ 
+    \mathbf{X} = \begin{bmatrix} x_1 & x_2 & x_3\\ y_1 & y_2 & y_3\\ 1 & 1 & 1 \end{bmatrix}, \ 
+    \mathbf{X^\prime} = \begin{bmatrix} x_1^\prime & x_2^\prime & x_3^\prime\\ y_1^\prime & y_2^\prime & y_3^\prime\\ 1 & 1 & 1 \end{bmatrix}
+  $$
+  Où $\mathbf{T}$ est la matrice de transformation affine, $\mathbf{X}$ est la matrice des points du mélange et
+  $\mathbf{X^\prime}$ est la matrice des points de l'image initiale.
+  L'équation pour effectuer la transformation affine du triangle du mélange vers l'image initiale est donc
+  $$
+    \mathbf{T}\mathbf{X} = \mathbf{X^\prime}
+  $$
+  Puisque $\mathbf{X}$ et $\mathbf{X^\prime}$ sont connus, $\mathbf{T}$ peut être obtenue par
+  $$
+    \mathbf{T} = \mathbf{X^\prime}\mathbf{X^{-1}}
+  $$
+  La correspondance de chaque pixel aux triangles de l'image du mélange est ensuite déterminée, puis la transformation
+  calculée précédemment est utilisée pour obtenir la position correspondante dans l'image initiale.
+  Par la suite, la couleur des pixels est extrapolée des images initiales.
+  Finalement, les visages métamorphosé des deux images initiales sont moyennées ensemble en utilisant le paramétre
+  <i>dissolve_frac</i> comme pondération.
+  </p>
+
+  <h3>Colin vers William</h3>
+  <p>
+    Afin de créer un vidéo de la métamorphose d'une image à l'autre, on génère plusieurs images en faisant varier <i>warp_frac</i> et <i>dissolve_frac</i> entre 0 et 1.
+    Ces images sont ensuite mises ensemble dans un vidéo tel que celui ci-dessous :
+  </p>
+  <div class="compare">
+    <img src="./resultats/morph/22. Panter_Colin.jpg">
+    <video controls><source src="./resultats/morph/morph.mp4" type="video/mp4"></video>
+    <img src="./resultats/morph/23. Perron_William.jpg">
+  </div>
+
+  <h3>Autres vidéos</h3>
+  <p>
+    De la même façon, la métamorphose peut être appliquée à d'autre visages :
+  </p>
+
+  <div class="compare">
+    <video controls><source src="./resultats/sam_emile_colin.mp4" type="video/mp4"></video>
+    <video controls><source src="./resultats/einstein_monroe.mp4" type="video/mp4"></video>
+    <video controls><source src="./resultats/courge_ananas.mp4" type="video/mp4"></video>
+  </div>
+
+  <h2>Partie B</h2>
+  
+  <h3>Visages moyens</h3>
+  <p>
+    Afin de déterminer le visage moyen, les points moyens d'un ensemble de données sont calculés afin d'obtenir la forme moyenne.
+    Ensuite, chaque visage est métamorphoser dans la forme moyenne, puis une moyenne de chaque image métamorphosée est calculée afin d'obtenir le visage moyen. <br>
+    Les images ci-dessous présentent la forme moyenne et la moyenne des visages des étudiants de la classe en utilisant les points entrés manuellement
+  </p>
+  <div class="compare">
+    <img src="./resultats/avg/avg_classe_manuel_shape.jpg">
+    <img src="./resultats/avg/avg_classe_manuel.jpg">
+  </div>
+
+  <p>
+    Les images ci-dessous présentent la forme moyenne et la moyenne des visages des étudiants de la classe en utilisant les points calculés par dlib.
+  </p>
+  <div class="compare">
+    <img src="./resultats/avg/avg_classe_dlib_shape.jpg">
+    <img src="./resultats/avg/avg_classe_dlib.jpg">
+  </div>
+  <p>
+    On voit que l'image moyenne obtenue avec les points entrés manuellement possède une meilleure résolution pour les cheveux ainsi que les oreilles.
+    Ce résultat est attendu puisque le détecteur <i>dlib</i> ne prend pas de points plus haut que les sourcils ou plus loin que le contour du visage.
+    Il ignore donc les oreilles et les cheveux, ce qui résultent au flou observé sur ces parties.
+    Cependant, le détecteur <i>dlib</i> capture plus de détails au niveau des yeux et du nez et ceux-ci sont donc plus clairs que pour les points manuels.
+  </p>
+  <p>
+    Les images ci-dessous présentent la forme moyenne et la moyenne des visages des données de Utrecht en utilisant les points calculés par dlib.
+  </p>
+  <div class="compare">
+    <img src="./resultats/avg/avg_utrecht_shape.jpg">
+    <img src="./resultats/avg/avg_utrecht.jpg">
+  </div>
+
+  <p>
+    Il est aussi possible de séparer les visages souriant de ceux qui ne le sont pas afin d'avoir les visages moyens souriant et non souriant.
+  </p>
+  <div class="compare">
+    <img src="./resultats/avg/avg_smile_shape.jpg">
+    <img src="./resultats/avg/avg_smile.jpg">
+    <img src="./resultats/avg/avg_nosmile.jpg">
+    <img src="./resultats/avg/avg_nosmile_shape.jpg">
+  </div>
+  
+  <h3>Visages masculins et féminins</h3>
+  La moyenne des visages peut aussi être calculée sur les visages masculins seulement afin d'obtenir l'image ci-dessous (gauche).
+  Mon visage peut ensuite être projeté sur la forme du visage masculin moyen tel que l'image du centre le montre.
+  L'effet est relativement convaincant, mais il nécessite une déformation importante puisque mon visage est beaucoup plus mince.
+  En moyennant la forme et la couleurs par un facteur de 0.5, au lieu de prendre toute la forme moyenne avec mon fondu, l'image de droite est obtenue.
+  Mon visage est encore reconnaissable et il semble plus naturel puisqu'il est plus près de ma forme habituelle, mais cela est effectué au coût d'un flou à certains endroits.
+  <div class="compare">
+    <img src="./resultats/avg/avg_male.jpg">
+    <img src="./resultats/colin_m.jpg">
+    <img src="./resultats/colin_m_2.jpg">
+  </div>
+
+  Les mêmes effets sont effectués avec les visages féminins afin d'obtenir les images ci-dessous.
+  Contrairement aux visages masculins, l'effet de mon visage projeté sur la forme du visage féminin moyen n'est pas très convaincant.
+  La forme nécessite encore une déformation importante, mais la présence de barbe donne des airs masculins à la photo.
+  Toutefois, le mélange de forme et de fondu permet de remédier partiellement à ces problèmes en rendant la barbe plus subtile.
+  <div class="compare">
+    <img src="./resultats/avg/avg_female.jpg">
+    <img src="./resultats/colin_f.jpg">
+    <img src="./resultats/colin_f_2.jpg">
+  </div>
+
+  <h3>Analyse en composantes principales</h3>
+  <p>
+    Les points déterminés sur les photos de la base de donnée d'Utrecht peuvent être utilisés afin de les décomposer en composantes principales.
+    En utilisant <i>sklearn.decomposition.PCA</i>, on décompose les points en 10 composantes en blanchissant les données.
+    Les points de mon visage sont ensuite décomposés pour obtenir les composantes correspondantes à mon visages :
+  </p>
+  <table>
+    <tr>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+    </tr>
+    <tr>
+      <th>0.229</th><th>0.321</th><th>0.354</th><th>0.724</th><th>1.82</th><th>-0.398</th><th>1.19</th><th>1.41</th><th>0.786</th><th>0.303</th>
+    </tr>
+  </table>
+  <p>
+    En modifiant une de ces composantes, puis en appliquant la transformation inverse, on peut voir l'effet de la composante sur les points de mon visage.
+    Les images ci-dessous sont obtenues en ajoutant une valeur variant de $[-2,2]$ sur une des composantes de mon visage :
+  </p>
+
+  <div class="scroll-container">
+    <div class="scroll-card"><p>Composante 1</p><video height="98%" controls><source src="./resultats/pca/component_0.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 2</p><video height="98%" controls><source src="./resultats/pca/component_1.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 3</p><video height="98%" controls><source src="./resultats/pca/component_2.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 4</p><video height="98%" controls><source src="./resultats/pca/component_3.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 5</p><video height="98%" controls><source src="./resultats/pca/component_4.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 6</p><video height="98%" controls><source src="./resultats/pca/component_5.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 7</p><video height="98%" controls><source src="./resultats/pca/component_6.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 8</p><video height="98%" controls><source src="./resultats/pca/component_7.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 9</p><video height="98%" controls><source src="./resultats/pca/component_8.mp4" type="video/mp4"></video></div>
+    <div class="scroll-card"><p>Composante 10</p><video height="98%" controls><source src="./resultats/pca/component_9.mp4" type="video/mp4"></video></div>
+  </div>
+  <p>
+    Les quatres premières composantes correspondent principalement à des translations, une mise à échelle et un rotation du visage.
+    Cependant, puisque le front ne fait pas partie du visage celui-ci ne suit pas, ce qui crée des faces étranges.
+    Les autres composantes correspondent à des changements de la forme du visage ou des expressions.
+    Par exemple, la composante 5 semble amincir le visage et la composante 6 contrôle le sourire.
+  </p>
+  <p>
+    Il est aussi possible d'exagérer les composantes afin d'obtenir des expressions <i>goofy</i>.
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./resultats/pca/img1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./resultats/pca/img2.jpg" height="98%"></div>
+  </div>
+
+</body>

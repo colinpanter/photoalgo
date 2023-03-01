@@ -11,15 +11,15 @@ if __name__ == "__main__":
     h, w = 800, 600
 
     name1 = "22. Panter_Colin"
-    with open(f"tp3/donnees/{name1}.txt", 'r') as f:
+    with open(f"tp3/donnees/classe/{name1}.txt", 'r') as f:
         points1 = np.array([[float(p) for p in line[1:-1].split('\t')] for line in f.readlines()] + [[0,0], [0,h], [w,h], [w,0]])
     
     name2 = "23. Perron_William"
-    with open(f"tp3/donnees/{name2}.txt", 'r') as f:
+    with open(f"tp3/donnees/classe/{name2}.txt", 'r') as f:
         points2 = np.array([[float(p) for p in line[1:-1].split('\t')] for line in f.readlines()] + [[0,0], [0,h], [w,h], [w,0]])
 
-    img1 = img_as_float(imread(f"tp3/donnees/{name1}.jpg"))
-    img2 = img_as_float(imread(f"tp3/donnees/{name2}.jpg"))
+    img1 = img_as_float(imread(f"tp3/donnees/classe/{name1}.jpg"))
+    img2 = img_as_float(imread(f"tp3/donnees/classe/{name2}.jpg"))
 
     N = 125
     a = 6
