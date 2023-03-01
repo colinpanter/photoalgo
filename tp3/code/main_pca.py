@@ -27,45 +27,6 @@ def create_pca():
 
     return pca
 
-
-def compare_mf(pca:PCA):
-    m_pts = [read_pts_file(f) for f in get_male_files()[0]]
-    f_pts = [read_pts_file(f) for f in get_female_files()[0]]
-
-    m_features = []
-    for pts in m_pts:
-        m_features.append(pca.transform(pts.reshape((1, -1))))
-
-    f_features = []
-    for pts in f_pts:
-        f_features.append(pca.transform(pts.reshape((1, -1))))
-
-    m_avg_components = np.array(m_features).mean(axis=0)
-    f_avg_components = np.array(f_features).mean(axis=0)
-
-    return m_avg_components, f_avg_components
-
-
-def colin_to_f(pca:PCA):
-    with open("tp3/donnees/other/colin_utrecht.txt", 'r') as f:
-        colin_pts = np.array([[int(i) for i in l[:-1].split(' ')] for l in f.readlines()])
-    colin_features = colin_pts.reshape((1, -1))
-    colin_img = img_as_float(imread("tp3/donnees/other/colin_utrecht.jpg"))
-
-    colin_components = pca.transform(colin_features)
-    m_components, f_components = compare_mf(pca)
-    f_pts = pca.inverse_transform(colin_components - m_components + f_components).reshape((-1, 2))
-
-    h, w, _ = colin_img.shape
-    colin_pts = np.vstack([colin_pts, [0,0], [0,h], [w,h], [w,0]])
-    f_pts = np.vstack([f_pts, [0,0], [0,h], [w,h], [w,0]])
-
-    tri = Delaunay((colin_pts + f_pts) / 2).simplices
-    
-    colin_f = morph(colin_img, colin_img, colin_pts, f_pts, tri, 0., 1.)
-    imsave("tp3/resultats/colin_f_v2.jpg", colin_f)
-
-
 def visualize_effect(pca:PCA, component:int):
     with open("tp3/donnees/other/colin_utrecht.txt", 'r') as f:
         colin_pts = np.array([[float(i) for i in l[:-1].split(' ')] for l in f.readlines()])
@@ -122,6 +83,6 @@ if __name__ == "__main__":
     pca_colin(pca, delta)
     print(f"Delta {delta}")
     
-    # for i in range(N_COMPONENTS):
-    #     Path(f"tp3/images/component_{i}").mkdir(exist_ok=True)
-    #     visualize_effect(pca, i)
+    for i in range(N_COMPONENTS):
+        Path(f"tp3/images/component_{i}").mkdir(exist_ok=True)
+        visualize_effect(pca, i)
