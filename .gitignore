@@ -5,6 +5,8 @@ tp3/images/
 tp3/donnees/
 tp3/resultats/
 tp3/video/
+tp4/data/
+tp4/resultats/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
