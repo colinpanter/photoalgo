@@ -1,0 +1,252 @@
+<head>
+<title>TP4 : Panoramas automatiques</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+</head>
+
+<body>
+  <h1>TP4 : Panoramas automatiques</h1>
+
+  <h2>Partie A</h2>
+
+  <h3>Réchauffement</h3>
+  <p>
+    Tout d'abord, la position des pixels des coins de l'image est déterminée et celle-ci est exprimée en coordonnées homogènes.
+    La transformation est ensuite appliquée sur les coins afin de déterminer les limites de l'image transformée.
+    À partir de ces limites, la position de chaque pixel de l'image transformée est déterminée.
+    La transformation inverse est calculée en inversant la matrice, puis celle-ci est appliquée sur la position de chaque pixel.
+    La couleur de chaque pixel est ensuite interpolée avec les positions transformées pour obtenir l'image transformée.
+  </p>
+  <div class="compare">
+    <img src="./images/rechauffement_1.jpg">
+    <img src="./images/rechauffement_2.jpg">
+  </div>
+
+  <h3>Appariement manuel</h3>
+  <p>
+    Afin de calculer l'homographie, des points sont manuellement désignés sur les deux images. Les points utilisés pour chaque paires d'images sont les suivants:
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/manuelle/Serie1/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/manuelle/Serie1/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/manuelle/Serie2/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/manuelle/Serie2/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/manuelle/Serie3/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/manuelle/Serie3/correspondance_1.jpg" height="98%"></div>
+  </div>
+  <p>
+    On résout ensuite l'équation suivante en calculant la SVB de la matrice et en gardant la solution correspondant à $\sigma=0$ dans la SVB.
+    \[
+    \begin{bmatrix}
+      -x_1 & -y_1 & -1 & 0 & 0 & 0 & x_1 x_1^\prime & y_1x_1^\prime & x_1^\prime \\
+      \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+      -x_n & -y_n & -1 & 0 & 0 & 0 & x_n x_n^\prime & y_nx_n^\prime & x_n^\prime \\
+      0 & 0 & 0 & -x_1 & -y_1 & -1 & x_1 y_1^\prime & y_1y_1^\prime & y_1^\prime \\
+      \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+      0 & 0 & 0 & -x_n & -y_n & -1 & x_n y_n^\prime & y_ny_n^\prime & y_n^\prime \\
+    \end{bmatrix} \begin{bmatrix}
+      a\\ b\\ c\\ d\\ e\\ f\\ g\\ h\\ i
+    \end{bmatrix} = \mathbf{0}
+    \]
+    Les homographies peuvent ensuite être appliquées sur les images correspondantes de la même façon qu'au réchauffement.
+    Les coordonnées correspondant aux coins des images transformées sont gardées afin de déterminer les dimensions du panorama et un panorama noir est créer à partir de ces dimensions.
+    La position de chaque image dans le panorma est déterminée et celles-ci sont additionnées au panorama.
+    Chaque pixel du panorama est ensuite moyenné par le nombre d'images l'affectant pour obtenir le panorama final.
+  </p>
+  <div class="compare">
+    <img src="./images/manuelle/Serie1.jpg">
+  </div>
+  <div class="compare">
+    <img src="./images/manuelle/Serie2.jpg">
+  </div>
+  <div class="compare">
+    <img src="./images/manuelle/Serie3.jpg">
+  </div>
+  <p>
+    On remarque que les détails fins des images sont plus flous lorsque plusieurs images sont superposées.
+    Notamment, les branches d'arbres sont souvent floues.
+    Les erreurs d'appariement sont plus apparentes dans les petits objets puisqu'une petite erreur peut déplacer l'objet complètement à côté.
+    Ceci cause donc le flou aperçu.
+    De plus, les coins des images sont plus sombres, ce qui cause une démarquation observable sur les panoramas.
+    Cela est probablement dû aux cameras capturant moins de lumière pour les extrémités des photos
+    et pourrait être réglé en mettant un poids lorsque les pixels sont moyennés afin de favoriser les pixels à proximité du centre de l'image.
+  </p>
+
+  <h2>Partie B</h2>
+
+  <p>
+    Pour cette section, les appariements de points sont effectués automatiquement.
+    Pour commencer, les coins dans l'image sont déterminer en calculant les gradients avec l'algorithme de Harris fourni.
+    La figure ci-dessous montre les coins déterminer pour deux images.
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/etapes/all_corners.jpg">
+  </div>
+  <p>
+    Parmi ceux-ci, 500 sont gardés (aléatoirement, je n'ai pas eu le temps de faire fonctionner ANMS).
+    La figure ci-dessous montre les points gardés de la figure précédente.
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/etapes/corners.jpg">
+  </div>
+  <p>
+    Ensuite, un descripteur de taille $9\times9$ est extrait autour de chaque coin.
+    Pour ce faire, un filtre gaussien est appliqué afin d'éviter l'aliasing,
+    puis le descripteur est extrait en des pixels dans un rayon de 22pixels du point d'intérêt (1pixel sur 5 est utilisé pour formé le descripteur).
+    Par la suite, les descripteurs extraits de deux images sont appariés.
+    Pour chaque descripteurs de la première image, les deux descripteurs les plus semblables (déterminer en minimisant l'erreur SDC) sont extraits.
+    La paire minimisant le quotient de la l'erreur SDC du plus semblable avec l'erreur SDC du deuxième plus semblable est retenue et retirée des descripteurs analysés.
+    Cette étape est répétée tant que tout les descripteurs d'une image ont été appariés ou que le ratio dépasse 0.6
+    (déterminer par la figure 6b de l'article de Brown et coll. afin de ne pas avoir trop d'erreurs).
+    La figure ci-dessous montre les points gardés de la figure précédente.
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/etapes/matching.jpg">
+  </div>
+  <p>
+    Finalement, RANSAC est appliqué sur les points appariés afin de rejeter les erreurs.
+    4 points appariés sont choisis aléatoirement et l'homographie associée est calculée de la même façon que dans la partie A.
+    L'homographie est ensuite appliquée sur tous les points et les points transformés sont comparés aux points correspondant de l'appariement.
+    Un point est consistant si le point transformé est à moins de 4 pixels de distance du point correspondant.
+    Les points consistants sont ensuite gardés en mémoire et l'algorithme est répété 100 fois.
+    Finalement, l'itération ayant obtenue le plus de points consistants est gardé et les points consistants sont utilisés comme points d'appariement.
+    Le reste se déroule de la même façon que dans la partie A.
+    La figure ci-dessous montre les points gardés de la figure précédente.
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/etapes/RANSAC.jpg">
+  </div>
+  
+  <h3>Appariement automatique</h3>
+  <p>
+    Pour la série 1, les points appariés obtenus sont les suivants :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Serie1/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie1/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie1/correspondance_2.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie1/correspondance_3.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie1/correspondance_4.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le panorama obtenu :
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/Serie1.jpg">
+  </div>
+  <br>
+  <p>
+    Pour la série 2, les points appariés obtenus sont les suivants :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Serie2/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie2/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie2/correspondance_2.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le panorama obtenu :
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/Serie2.jpg">
+  </div>
+  <br>
+  <p>
+    Pour la série 3, les points appariés obtenus sont les suivants :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Serie3/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie3/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie3/correspondance_2.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie3/correspondance_3.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Serie3/correspondance_4.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le panorama obtenu :
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/Serie3.jpg">
+  </div>
+  <p>
+    Ces séries d'images donnent des résultats satisfaisants.
+    La série 1 donne un résultat pratiquement parfait. Les images sont très bien alignées et les bordures d'images ne sont pas visibles.
+    La série 2 est la moins bonne. Certains éléments sont mal alignés, particulièrement le lampadaire et l'image de droite est très étirée.
+    Il aurait fallu que le centre du panorama soit entre la deuxième et la troisième image afin que l'image de droite soit moins déformée.
+    Finalement, la série 3 est satisfaisante avec un bon alignement et des bordures subtiles.
+    Cependant, similairement à la série 2, les images du bas ont une déformation assez importante.
+    Le centre devrait être placé entre les deux images du centre afin de minimiser les déformations.
+  </p>
+  
+  <h3>Mes Images</h3>
+  <p>
+    La première série est constituée de photos d'un salon :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Salon/salon_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/salon_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/salon_2.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/salon_3.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/salon_4.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le points appariés obtenus sont les suivants :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Salon/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/correspondance_2.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Salon/correspondance_3.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le panorama obtenu :
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/Salon.jpg">
+  </div>
+  <p>
+    Ce panorama a donné un moins bon résultats que les autres.
+    Les points appariés sont surtout concentré au fond de la pièce et les objets en avant-plan sonts donc mal alignés.
+    De plus, les images sont plutôts rapprochées, donc certains objets du centre (tel que le sofa) sont constitués des 5 photos.
+    Cela est donc plus susceptible aux erreurs puisque les 5 images doivent être bien alignées.
+  </p>
+  <br>
+  <p>
+    La deuxième série est constituée de photos d'un parc :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Parc/parc_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Parc/parc_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Parc/parc_2.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Parc/parc_3.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le points appariés obtenus sont les suivants :
+  </p>
+  <div class="scroll-container">
+    <div class="scroll-card"><img src="./images/automatique/Parc/correspondance_0.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Parc/correspondance_1.jpg" height="98%"></div>
+    <div class="scroll-card"><img src="./images/automatique/Parc/correspondance_2.jpg" height="98%"></div>
+  </div>
+  <p>
+    Et le panorama obtenu :
+  </p>
+  <div class="compare">
+    <img src="./images/automatique/Parc.jpg">
+  </div>
+  <p>
+    Ce panorama donne un bon résultat.
+    Les arbres sont un peu flou et le ciel montre un peu les démarquation d'images, mais les erreurs restent minimes.
+  </p>
+
+</body>

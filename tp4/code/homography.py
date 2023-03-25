@@ -30,7 +30,7 @@ def appliqueTransformation(img:array, H:array, lim:bool=False) -> array:
     img_tf = np.dstack([(RectBivariateSpline(np.arange(h), np.arange(w), img[:, :, i]).ev(correspondance[1], correspondance[0])).reshape(correspondance.shape[1:]) for i in range(3)])
     img_tf[np.logical_or(np.logical_or(correspondance[0] < 0, correspondance[0] > w), np.logical_or(correspondance[1] < 0, correspondance[1] > h))] = 0
 
-    return img_tf, (x_min, x_max+1, y_min, y_max+1) if lim else img_tf
+    return (img_tf, (x_min, x_max+1, y_min, y_max+1)) if lim else img_tf
 
 
 def calculate_homography(source_pts: array, dest_pts:array) -> array:
