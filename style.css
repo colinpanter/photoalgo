@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1500px;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.tp-container {
+    width: 100%;
+    max-width: 800px;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.tp-link {
+    height: 300px;
+    border-radius: 20px;
+
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+
+    color: white;
+    font: 30px Arial, sans-serif;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-color: grey;
+    background-blend-mode: multiply;
+}
+
+.tp-link:hover {
+    color: transparent;
+    background-color: white;
+}
