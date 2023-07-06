@@ -16,6 +16,7 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     align-items: stretch;
+    gap: 10px;
 }
 
 .tp-link {
